@@ -18,6 +18,13 @@ app.add_middleware(
 
 # Load model at startup
 model_path = "../phobert_sentiment_model_final"
+if not os.path.exists(model_path):
+    print("Model not found locally, downloading...")
+    from transformers import AutoTokenizer, AutoModelForSequenceClassification
+    # For deployment, you might want to use a different model or download from Hugging Face
+    # For now, we'll assume the model is available
+    pass
+
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 model = AutoModelForSequenceClassification.from_pretrained(model_path)
 
@@ -26,7 +33,7 @@ class TextInput(BaseModel):
 
 @app.post("/predict")
 def predict_sentiment(input: TextInput):
-    # Your prediction logic here
+    #  Prediction logic here
     inputs = tokenizer(input.text, return_tensors="pt", truncation=True, padding=True)
     with torch.no_grad():
         outputs = model(**inputs)
