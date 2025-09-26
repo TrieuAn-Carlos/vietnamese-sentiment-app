@@ -19,14 +19,14 @@ app.add_middleware(
 # Load model at startup
 model_path = "../phobert_sentiment_model_final"
 if not os.path.exists(model_path):
-    print("Model not found locally, downloading...")
-    from transformers import AutoTokenizer, AutoModelForSequenceClassification
-    # For deployment, you might want to use a different model or download from Hugging Face
-    # For now, we'll assume the model is available
-    pass
-
-tokenizer = AutoTokenizer.from_pretrained(model_path)
-model = AutoModelForSequenceClassification.from_pretrained(model_path)
+    print("Model not found locally, downloading from Hugging Face...")
+    # For Railway deployment, download model from Hugging Face
+    model_name = "your-username/your-model-name"  # Replace with your Hugging Face model name
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForSequenceClassification.from_pretrained(model_name)
+else:
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    model = AutoModelForSequenceClassification.from_pretrained(model_path)
 
 class TextInput(BaseModel):
     text: str
